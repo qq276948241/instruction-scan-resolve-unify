@@ -1,0 +1,41 @@
+# MIT License
+#
+# Copyright (c) 2021 Jake Sanders
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# notadirective=true
+
+# `ARG ARG1='single-quoted value'` was resolved to `ARG1=val1` from build argument.
+# `ARG ARG2="double-quoted value"` was resolved to `ARG2=val2` from build argument.
+# `ARG ARG3=escaped\ value` was resolved to `ARG3=val3` from build argument.
+# `ARG ARG4` was resolved to `ARG4=val4` from build argument.
+# `ARG FOO=foo-default` was resolved to `FOO=foo value` from build argument.
+# `ARG RUNTIME_IMAGE` was resolved to `RUNTIME_IMAGE=runtime-image@sha256:0bf474896363505e5ea5e5d6ace8ebfb13a760a409b1fb467d428fc716f9f284` from build argument.
+FROM build-image-1
+# `ARG FOO` was resolved to `FOO=foo value` from prior declaration.
+ENV bar="foo value"
+ENV baz="foo value" dq="double-quoted value" sq='single-quoted value'
+RUN cmd arg1 arg2
+
+FROM build-image-2:tag
+
+FROM runtime-image@sha256:0bf474896363505e5ea5e5d6ace8ebfb13a760a409b1fb467d428fc716f9f284
+ENV ONE="TWO= THREE=world"
+CMD echo -n "test test test" | wc -
